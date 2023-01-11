@@ -146,6 +146,8 @@ CLI.build = function() {
         }
     });
 
+    const removeNodeModules = taskList.length > 1;
+
     taskList.forEach(function(taskName) {
         banner('Building: ' + taskName);
         var taskPath = path.join(tasksPath, taskName);
@@ -294,6 +296,11 @@ CLI.build = function() {
         console.log();
         console.log('> copying task resources');
         copyTaskResources(taskMake, taskPath, outDir);
+
+        if (removeNodeModules) {
+            console.log('\n> removing node modules');
+            rm('-Rf', path.join(taskPath, 'node_modules'));
+        }
     });
 
     banner('Build successful', true);
